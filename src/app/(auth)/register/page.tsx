@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,7 +16,7 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null)
   const [isDuplicateEmail, setIsDuplicateEmail] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
+  const router = useRouter()
   const supabase = createClient()
 
   const getErrorMessage = (error: string): string => {
@@ -66,65 +67,8 @@ export default function RegisterPage() {
       return
     }
 
-    setSuccess(true)
-  }
-
-  if (success) {
-    return (
-      <div className="min-h-screen flex">
-        {/* Left side - Branding */}
-        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary via-primary/90 to-primary/70 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
-          <div className="flex flex-col justify-center items-center w-full px-12 relative z-10">
-            <div className="max-w-md text-center">
-              <h1 className="text-4xl font-bold text-primary-foreground mb-6">
-                ¡Casi listo!
-              </h1>
-              <p className="text-lg text-primary-foreground/80">
-                Revisa tu correo para activar tu cuenta.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Right side - Success message */}
-        <div className="flex-1 flex items-center justify-center p-4 sm:p-8 bg-background">
-          <Card className="w-full max-w-md border-0 shadow-none sm:border sm:shadow-lg">
-            <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-400" />
-              </div>
-              <CardTitle className="text-2xl">¡Cuenta creada!</CardTitle>
-              <CardDescription>
-                Revisa tu email para confirmar tu cuenta
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="p-4 rounded-lg bg-green-100/50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
-                  <p className="text-sm text-green-800 dark:text-green-200">
-                    Hemos enviado un enlace de confirmación a <strong>{email}</strong>.
-                    Haz clic en el enlace para activar tu cuenta.
-                  </p>
-                </div>
-              </div>
-              <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-sm text-muted-foreground text-center">
-                  ¿No recibiste el email? Revisa tu carpeta de spam.
-                </p>
-              </div>
-              <Link href="/login" className="block">
-                <Button className="w-full">
-                  Ir a iniciar sesión
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    )
+    router.push('/onboarding')
+    router.refresh()
   }
 
   return (

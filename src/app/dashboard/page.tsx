@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getProfile } from '@/lib/supabase/profiles'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { LogoutButton } from '@/components/logout-button'
@@ -25,6 +26,11 @@ export default async function DashboardPage() {
 
   if (!user) {
     redirect('/login')
+  }
+
+  const profile = await getProfile()
+  if (!profile || !profile.onboarding_completed) {
+    redirect('/onboarding')
   }
 
   return (
