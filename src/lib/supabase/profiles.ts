@@ -37,11 +37,20 @@ export async function saveProfile(profile: Partial<Profile>): Promise<{ error: s
 
   if (!user) return { error: 'Not authenticated' }
 
-  const { error } = await supabase
-    .from('profiles')
-    .upsert({ id: user.id, ...profile })
+  const data = { id: user.id, ...profile }
+  console.log('saving profile...', data)
 
-  return { error: error?.message ?? null }
+  const result = await supabase
+    .from('profiles')
+    .upsert(data)
+
+  if (result.error) {
+    console.log('error:', result.error)
+  } else {
+    console.log('result:', result)
+  }
+
+  return { error: result.error?.message ?? null }
 }
 
 export async function completeOnboarding(plan: 'free' | 'pro'): Promise<{ error: string | null }> {
@@ -52,9 +61,18 @@ export async function completeOnboarding(plan: 'free' | 'pro'): Promise<{ error:
 
   if (!user) return { error: 'Not authenticated' }
 
-  const { error } = await supabase
-    .from('profiles')
-    .upsert({ id: user.id, plan, onboarding_completed: true })
+  const data = { id: user.id, plan, onboarding_completed: true }
+  console.log('saving profile...', data)
 
-  return { error: error?.message ?? null }
+  const result = await supabase
+    .from('profiles')
+    .upsert(data)
+
+  if (result.error) {
+    console.log('error:', result.error)
+  } else {
+    console.log('result:', result)
+  }
+
+  return { error: result.error?.message ?? null }
 }

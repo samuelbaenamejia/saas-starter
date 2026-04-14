@@ -90,7 +90,15 @@ export default async function DashboardPage() {
             <CardContent>
               <div className="text-2xl font-bold">Activo</div>
               <p className="text-xs text-muted-foreground mt-1">
-                Plan gratuito
+                {profile?.plan === 'pro' ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-semibold text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400">
+                    Pro
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                    Gratis
+                  </span>
+                )}
               </p>
             </CardContent>
           </Card>
@@ -152,6 +160,15 @@ export default async function DashboardPage() {
             <CardContent className="space-y-4">
               <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <User className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-muted-foreground">Nombre</p>
+                  <p className="font-medium truncate">{profile?.full_name || '—'}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                   <Mail className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -161,11 +178,29 @@ export default async function DashboardPage() {
               </div>
               <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-muted-foreground">Empresa</p>
+                  <p className="font-medium truncate">{profile?.company || '—'}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <TrendingUp className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-muted-foreground">Caso de uso</p>
+                  <p className="font-medium truncate">{profile?.use_case || '—'}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                   <User className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-muted-foreground">ID de usuario</p>
-                  <p className="font-mono text-sm truncate">{user.id}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Tamaño del equipo</p>
+                  <p className="font-medium truncate">{profile?.team_size || '—'}</p>
                 </div>
               </div>
             </CardContent>

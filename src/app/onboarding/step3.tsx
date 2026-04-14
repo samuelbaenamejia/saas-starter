@@ -54,8 +54,16 @@ export function Step3({ defaultValues, onNext, onBack }: Step3Props) {
     setError(null)
     setLoading(true)
     try {
-      await onNext({ plan })
-    } catch {
+      console.log('step3: calling onNext with plan:', plan)
+      const result = await Promise.race([
+        onNext({ plan }),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('timeout')), 10_000)
+        ),
+      ])
+      console.log('step3: onNext resolved:', result)
+    } catch (err) {
+      console.log('step3: onNext failed:', err)
       setError('Error al guardar. Por favor, intenta de nuevo.')
     } finally {
       setLoading(false)

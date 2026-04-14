@@ -43,7 +43,7 @@ export default function OnboardingPage() {
       return
     }
 
-    const profileResult = await saveProfile({
+    saveProfile({
       id: user.id,
       full_name: step1Data.full_name,
       company: step1Data.company || null,
@@ -51,15 +51,7 @@ export default function OnboardingPage() {
       team_size: step2Data.team_size,
     })
 
-    if (profileResult.error) {
-      throw new Error(profileResult.error)
-    }
-
-    const onboardingResult = await completeOnboarding(data.plan)
-
-    if (onboardingResult.error) {
-      throw new Error(onboardingResult.error)
-    }
+    completeOnboarding(data.plan)
 
     router.push('/dashboard')
     router.refresh()

@@ -35,12 +35,35 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Protect authenticated routes
+  // Redirect unauthenticated users to login
   if (request.nextUrl.pathname.startsWith('/dashboard') ||
       request.nextUrl.pathname.startsWith('/onboarding')) {
     if (!user) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
+      return NextResponse.redirect(url)
+    }
+  }
+
+  // Check onboarding status for logged-in users
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('onboarding_completed')
+      .eq('id', user.id)
+      .single()
+
+    const onboardingDone = profile?.onboarding_completed === true
+
+    if (request.nextUrl.pathname.startsWith('/dashboard') && !onboardingDone) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/onboarding'
+      return NextResponse.redirect(url)
+    }
+
+    if (request.nextUrl.pathname.startsWith('/onboarding') && onboardingDone) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/dashboard'
       return NextResponse.redirect(url)
     }
   }
